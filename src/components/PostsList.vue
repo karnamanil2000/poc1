@@ -7,9 +7,12 @@
     </form>
   </div>
   <div v-for="post in filteredPosts" :key=post.id>
-    <h6>{{post.id}}</h6>
+    <!-- <h6>{{post.id}}</h6>
     <h5>{{post.title}}</h5>
-    <p>{{post.body}}</p>
+    <p>{{post.body}}</p> -->
+    <h6 v-html="post.id"></h6>
+    <h5 v-html="post.title"></h5>
+    <p v-html= "post.body"></p>
   </div>
   <!-- <p >{{ posts }}</p> -->
 </div>
@@ -23,7 +26,7 @@ export default {
     return {
       posts: null,
       flag: false,
-      searchQuery: ''
+      searchQuery: undefined
     }
   },
   computed: {
@@ -32,12 +35,17 @@ export default {
       let data = this.posts != null ? this.posts : null
       if (filterKey) {
         data = data.filter((row) => {
+          // console.log('row', Object.keys(row))
           return Object.keys(row).some((key) => {
-            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+            var s = String(row[key]).replace(filterKey, filterKey.bold()) // '<b>' + filterKey + '</b>')
+            // var s = String(row[key]).replace(filterKey, `<strong> ${{ filterKey }} </strong>`)
+            console.log(s)
+            // return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+            return s.toLowerCase().indexOf(filterKey) > -1
           })
         })
       }
-      // data = data.toLowerCase().replace(filterKey, '<span style="background: yellow;">' + filterKey + '</span>')
+      // data = data.replace(filterKey, '<span style="background: yellow;">' + filterKey + '</span>')
       return data
     }
   },
@@ -47,11 +55,27 @@ export default {
       // if (this.searchQuery !== undefined || this.searchQuery !== '') {
       //   return value.replace('an', '<span style="background: yellow;">' + 'an' + '</span>')
       // }
+      // if (this.searchQuery === undefined) {
+      //   return ''
+      // }
+      const filterKey = this.searchQuery !== undefined && this.searchQuery !== null && this.searchQuery !== '' ? this.searchQuery && this.searchQuery.toLowerCase() : ''
+      console.log('filter', filterKey)
+      if (filterKey === undefined && filterKey === '') {
+        return ''
+      }
       if (!value) return ''
       // if (this.searchQuery === undefined || this.searchQuery === '' || this.searchQuery === null) return ''
-      value = value.toString()
+      // value = value.toString()
       // return value.toUpperCase()
-      return value.replace('architect', '<span style="background: yellow;">' + 'ARCHITECT' + '</span>')
+
+      // console.log(filterKey)
+      return filterKey !== undefined && filterKey !== null ? value.toString().replace(filterKey, filterKey.toUpperCase()) : ''
+      // const pattern = value
+      //   .split(' ')
+      //   .filter((t) => t.length > 0)
+      //   .join('|')
+      // const regex = new RegExp(pattern, 'gi')
+      // return value ? this.filteredPosts?.replace(regex, (match) => `<b>${match}</b>`) : this.filteredPosts
     }
   },
   async created () {
