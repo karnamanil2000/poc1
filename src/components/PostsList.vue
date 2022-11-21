@@ -37,7 +37,7 @@ export default {
         data = data.filter((row) => {
           // console.log('row', Object.keys(row))
           return Object.keys(row).some((key) => {
-            var s = String(row[key]).replace(filterKey, filterKey.bold()) // '<b>' + filterKey + '</b>')
+            const s = String(row[key]).replace(filterKey, filterKey.bold()) // '<b>' + filterKey + '</b>')
             // var s = String(row[key]).replace(filterKey, `<strong> ${{ filterKey }} </strong>`)
             console.log(s)
             // return String(row[key]).toLowerCase().indexOf(filterKey) > -1
@@ -80,8 +80,8 @@ export default {
   },
   async created () {
     try {
-      const res = await axios.get('http://localhost:3000/posts')
-      // const res = await axios.get('https://jsonplaceholder.typicode.com/posts')
+      // const res = await axios.get('http://localhost:3000/posts')
+      const res = await axios.get('https://jsonplaceholder.typicode.com/posts')
       this.posts = res.data
       // const res = await fetch('http://localhost:3000/posts')
       // const res = await fetch('https://jsonplaceholder.typicode.com/posts')

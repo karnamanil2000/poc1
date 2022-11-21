@@ -2,6 +2,9 @@
   <div class="home">
     <h1>This is an home page</h1>
     <h1>We can view list of <router-link to="/posts">Posts</router-link> here.</h1>
+    <v-form>
+      <input autofocus type="text" class="new-todo" placeholder="What needs to be done?"/>
+    </v-form>
   </div>
 </template>
 
